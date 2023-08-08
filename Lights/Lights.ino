@@ -5,8 +5,11 @@
 void TestPattern( void *pvParameters );
 void BlinkPattern( void *pvParameters );
 
-#define NUM_LEDS 3
+#define NUM_LEDS 5
 #define DATA_PIN 5
+#define LED_TYPE WS2811
+#define COLOR_ORDER RGB
+
 CRGB leds[NUM_LEDS];
 
 Building *buildings[] = {("house1", 0, 0), ("house2", 1, 0), ("house3", 2, 0)};
@@ -17,7 +20,7 @@ void setup()
   
   while (!Serial) {;}
 
-  FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
+  FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS);
 
   xTaskCreate(TaskBlink, "BlinkPattern", 128, NULL, 2, NULL);
   //xTaskCreate(TaskTest, "TestPattern", 128, NULL, 2, NULL);
@@ -51,10 +54,10 @@ void TaskBlink(void *pvParameters)
     {
       if (buildings[i]->GetPattern() == 0)
       {
-        leds[0] = CRGB::Red;
+        leds[i] = CRGB::Red;
         FastLED.show();
         delay(500);
-        leds[0] = CRGB::Black;
+        leds[i] = CRGB::Black;
         FastLED.show();
         delay(500);
       }
