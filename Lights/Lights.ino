@@ -12,7 +12,7 @@ void BlinkPattern( void *pvParameters );
 
 CRGB leds[NUM_LEDS];
 
-Building *buildings[] = {("house1", 0, 0), ("house2", 1, 0), ("house3", 2, 0)};
+Building buildings[] = {Building("house1", 0, 1), Building("house2", 1, 0), Building("house3", 2, 0)};
 
 void setup()
 {
@@ -23,12 +23,13 @@ void setup()
   FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS);
 
   xTaskCreate(TaskBlink, "BlinkPattern", 128, NULL, 2, NULL);
+  xTaskCreate(TaskFastBlink, "FastBlinkPattern", 128, NULL, 2, NULL);
   //xTaskCreate(TaskTest, "TestPattern", 128, NULL, 2, NULL);
 }
 
 void loop()
 {
-
+  
 }
 
 void TaskTest(void *pvParameters)
@@ -50,9 +51,9 @@ void TaskBlink(void *pvParameters)
 
   for (;;)
   {
-    for (int i = 0; i < NUM_LEDS; i++)
+    for (int i = 0; i < NUM_LEDS - 2; i++)
     {
-      if (buildings[i]->GetPattern() == 0)
+      if (buildings[i].GetPattern() == 0)
       {
         leds[i] = CRGB::Red;
         FastLED.show();
@@ -60,6 +61,27 @@ void TaskBlink(void *pvParameters)
         leds[i] = CRGB::Black;
         FastLED.show();
         delay(500);
+      }
+    }
+  }
+}
+
+void TaskFastBlink(void *pvParameters)
+{
+  (void) pvParameters;
+
+  for (;;)
+  {
+    for (int i = 0; i < NUM_LEDS - 2; i++)
+    {
+      if (buildings[i].GetPattern() == 1)
+      {
+        leds[i] = CRGB::Red;
+        FastLED.show();
+        delay(250);
+        leds[i] = CRGB::Black;
+        FastLED.show();
+        delay(250);
       }
     }
   }
