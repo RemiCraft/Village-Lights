@@ -4,15 +4,21 @@
 
 void TestPattern( void *pvParameters );
 void BlinkPattern( void *pvParameters );
+void FastBlinkPattern( void *pvParameters );
 
 #define NUM_LEDS 5
 #define DATA_PIN 5
 #define LED_TYPE WS2811
 #define COLOR_ORDER RGB
 
-CRGB leds[NUM_LEDS];
 
-Building buildings[] = {Building("house1", 0, 1), Building("house2", 1, 0), Building("house3", 2, 0)};
+CRGB leds[NUM_LEDS];
+// Building("name", position, patternID)
+Building buildings[] = {
+  Building("house1", 0, 1),
+  Building("house2", 1, 0),
+  Building("house3", 2, 0)
+};
 
 void setup()
 {
@@ -57,10 +63,10 @@ void TaskBlink(void *pvParameters)
       {
         leds[i] = CRGB::Red;
         FastLED.show();
-        delay(500);
+        vTaskDelay( 500 / portTICK_PERIOD_MS );
         leds[i] = CRGB::Black;
         FastLED.show();
-        delay(500);
+        vTaskDelay( 500 / portTICK_PERIOD_MS );
       }
     }
   }
@@ -78,10 +84,10 @@ void TaskFastBlink(void *pvParameters)
       {
         leds[i] = CRGB::Red;
         FastLED.show();
-        delay(250);
+        vTaskDelay( 250 / portTICK_PERIOD_MS );
         leds[i] = CRGB::Black;
         FastLED.show();
-        delay(250);
+        vTaskDelay( 250 / portTICK_PERIOD_MS );
       }
     }
   }

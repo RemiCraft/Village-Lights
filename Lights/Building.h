@@ -11,7 +11,7 @@ class Building {
     Building()
     {
       name = "newName";
-      position = 0;
+      position = -1;
       pattern = 0;
     }
 
