@@ -9,18 +9,20 @@ void FireplacePattern( void *pvParameters );
 
 #define NUM_LEDS 5
 #define DATA_PIN 5
-#define LED_TYPE WS2811
-#define COLOR_ORDER RGB
+//#define LED_TYPE WS2811
+//#define COLOR_ORDER RGB
+#define LED_TYPE WS2812B
+#define COLOR_ORDER GRB
 
 
 CRGB leds[NUM_LEDS];
 // Building("name", position, patternID)
 Building buildings[] = {
   Building("house1", 0, 1),
-  Building("house2", 1, 0),
+  Building("house2", 1, 1),
   Building("house3", 2, 1),
-  Building("house4", 3, 0),
-  Building("house5", 4, 0),
+  Building("house4", 3, 1),
+  Building("house5", 4, 1),
 };
 
 void setup()
