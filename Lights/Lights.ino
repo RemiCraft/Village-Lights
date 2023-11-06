@@ -183,10 +183,9 @@ void Fireplace(void *pvParameters)
   {
     for(int i = 0; i < fireplaceBuildings.getSize(); i++)
     {
-      leds[i] = CRGB::Orange;
-      FastLED.setBrightness(random(120)+135);
-      FastLED.show();
+      leds[i] = CHSV(30, 255, random(0, 256));
     }
+    FastLED.show();
     vTaskDelay( 100 / portTICK_PERIOD_MS );
   }
 }
