@@ -18,11 +18,11 @@ void FireplacePattern( void *pvParameters );
 CRGB leds[NUM_LEDS];
 // Building("name", position, patternID)
 Building buildings[] = {
-  Building("house1", 0, 1),
+  Building("house1", 0, 0),
   Building("house2", 1, 1),
-  Building("house3", 2, 1),
+  Building("house3", 2, 0),
   Building("house4", 3, 1),
-  Building("house5", 4, 1),
+  Building("house5", 4, 0),
 };
 
 void setup()
@@ -63,18 +63,24 @@ void TaskBlink(void *pvParameters)
 
   for (;;)
   {
-    for (int i = 0; i < NUM_LEDS - 2; i++)
+    for (int i = 0; i < NUM_LEDS; i++)
     {
       if (buildings[i].GetPattern() == 0)
       {
         leds[i] = CRGB::Red;
         FastLED.show();
-        vTaskDelay( 500 / portTICK_PERIOD_MS );
-        leds[i] = CRGB::Black;
-        FastLED.show();
-        vTaskDelay( 500 / portTICK_PERIOD_MS );
       }
     }
+    vTaskDelay( 500 / portTICK_PERIOD_MS );
+    for (int i = 0; i < NUM_LEDS; i++)
+    {
+      if (buildings[i].GetPattern() == 0)
+      {
+        leds[i] = CRGB::Black;
+        FastLED.show();
+      }
+    }
+    vTaskDelay( 500 / portTICK_PERIOD_MS );
   }
 }
 
@@ -84,20 +90,26 @@ void TaskFastBlink(void *pvParameters)
 
   for (;;)
   {
-    for (int i = 0; i < NUM_LEDS - 2; i++)
+    for (int i = 0; i < NUM_LEDS; i++)
     {
       if (buildings[i].GetPattern() == 1)
       {
         leds[i] = CRGB::Red;
         FastLED.show();
-        vTaskDelay( 250 / portTICK_PERIOD_MS );
-        leds[i] = CRGB::Black;
-        FastLED.show();
-        vTaskDelay( 250 / portTICK_PERIOD_MS );
       }
     }
+    vTaskDelay( 250 / portTICK_PERIOD_MS );
+    for (int i = 0; i < NUM_LEDS; i++)
+    {
+      if (buildings[i].GetPattern() == 1)
+      {
+        leds[i] = CRGB::Black;
+        FastLED.show();
+      }
+    }
+    vTaskDelay( 250 / portTICK_PERIOD_MS );
   }
-}
+}        
 
 void Fireplace(void *pvParameters)
 {
@@ -105,9 +117,6 @@ void Fireplace(void *pvParameters)
 
   for (;;)
   {
-    Serial.println("Pog");
-    vTaskDelay( 1000 / portTICK_PERIOD_MS );
-    Serial.println("Champ");
-    vTaskDelay( 1000 / portTICK_PERIOD_MS );
+
   }
 }
