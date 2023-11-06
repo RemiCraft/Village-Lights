@@ -12,12 +12,11 @@ List<Building> fastBlinkBuildings;
 List<Building> blinkBuildings;
 List<Building> newBlinkBuildings;
 
-#define NUM_LEDS 5
+#define NUM_LEDS 20
 #define DATA_PIN 5
-//#define LED_TYPE WS2811
-//#define COLOR_ORDER RGB
+
 #define LED_TYPE WS2812B
-#define COLOR_ORDER GRB
+#define COLOR_ORDER RGB
 
 
 CRGB leds[NUM_LEDS];
@@ -28,6 +27,21 @@ Building buildings[] = {
   Building("house3", 2, 2),
   Building("house4", 3, 2),
   Building("house5", 4, 2),
+  Building("house6", 5, 2),
+  Building("house7", 6, 2),
+  Building("house8", 7, 2),
+  Building("house9", 8, 2),
+  Building("house10", 9, 2),
+  Building("house11", 10, 2),
+  Building("house12", 11, 2),
+  Building("house13", 12, 2),
+  Building("house14", 13, 2),
+  Building("house15", 14, 2),
+  Building("house16", 15, 2),
+  Building("house17", 16, 2),
+  Building("house18", 17, 2),
+  Building("house19", 18, 2),
+  Building("house20", 19, 2),
 };
 
 void setup()
