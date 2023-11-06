@@ -23,11 +23,11 @@ List<Building> newBlinkBuildings;
 CRGB leds[NUM_LEDS];
 // Building("name", position, patternID)
 Building buildings[] = {
-  Building("house1", 0, 3),
-  Building("house2", 1, 3),
-  Building("house3", 2, 3),
-  Building("house4", 3, 3),
-  Building("house5", 4, 3),
+  Building("house1", 0, 2),
+  Building("house2", 1, 2),
+  Building("house3", 2, 2),
+  Building("house4", 3, 2),
+  Building("house5", 4, 2),
 };
 
 void setup()
@@ -167,6 +167,12 @@ void Fireplace(void *pvParameters)
 
   for (;;)
   {
-
+    for(int i = 0; i < fireplaceBuildings.getSize(); i++)
+    {
+      leds[i] = CRGB::Orange;
+      FastLED.setBrightness(random(120)+135);
+      FastLED.show();
+    }
+    vTaskDelay( 100 / portTICK_PERIOD_MS );
   }
 }
