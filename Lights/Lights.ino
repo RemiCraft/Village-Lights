@@ -5,18 +5,19 @@
 
 void TestPattern( void *pvParameters );
 void BlinkPattern( void *pvParameters );
-void FastBlinkPattern( void *pvParameters );
 void FireplacePattern( void *pvParameters );
 List<Building> fireplaceBuildings;
-List<Building> fastBlinkBuildings;
+List<int> fireTargets;
+List<int> fireValues;
 List<Building> blinkBuildings;
-List<Building> newBlinkBuildings;
 
 #define NUM_LEDS 20
 #define DATA_PIN 5
 
 #define LED_TYPE WS2812B
 #define COLOR_ORDER RGB
+
+int fireSpeed = 10;
 
 
 CRGB leds[NUM_LEDS];
@@ -56,29 +57,27 @@ void setup()
     {
       if (buildings[i].GetPattern() == 0)
       {
-        blinkBuildings.add(buildings[i]);
+        //testBuildings.add(buildings[i]);
       }
 
       if (buildings[i].GetPattern() == 1)
       {
-        fastBlinkBuildings.add(buildings[i]);
+        blinkBuildings.add(buildings[i]);
       }
 
       if (buildings[i].GetPattern() == 2)
       {
         fireplaceBuildings.add(buildings[i]);
       }
+    }
 
-      if (buildings[i].GetPattern() == 3)
-      {
-        newBlinkBuildings.add(buildings[i]);
-      }
+    for(int i = 0; i < fireplaceBuildings.getSize(); i++)
+    {
+      fireValues[i] = random(50, 256);
     }
 
   xTaskCreate(TaskBlink, "BlinkPattern", 128, NULL, 2, NULL);
-  xTaskCreate(TaskFastBlink, "FastBlinkPattern", 128, NULL, 2, NULL);
   xTaskCreate(Fireplace, "FireplacePattern", 128, NULL, 2, NULL);
-  xTaskCreate(TaskNewBlink, "NewBlinkPattern", 128, NULL, 2, NULL);
   //xTaskCreate(TaskTest, "TestPattern", 128, NULL, 2, NULL);
 }
 
@@ -106,67 +105,13 @@ void TaskBlink(void *pvParameters)
 
   for (;;)
   {
-    for (int i = 0; i < NUM_LEDS; i++)
-    {
-      if (buildings[i].GetPattern() == 0)
-      {
-        leds[i] = CRGB::Red;
-        FastLED.show();
-      }
-    }
-    vTaskDelay( 500 / portTICK_PERIOD_MS );
-    for (int i = 0; i < NUM_LEDS; i++)
-    {
-      if (buildings[i].GetPattern() == 0)
-      {
-        leds[i] = CRGB::Black;
-        FastLED.show();
-      }
-    }
-    vTaskDelay( 500 / portTICK_PERIOD_MS );
-  }
-}
-
-void TaskFastBlink(void *pvParameters)
-{
-  (void) pvParameters;
-
-  for (;;)
-  {
-    for (int i = 0; i < NUM_LEDS; i++)
-    {
-      if (buildings[i].GetPattern() == 1)
-      {
-        leds[i] = CRGB::Red;
-        FastLED.show();
-      }
-    }
-    vTaskDelay( 250 / portTICK_PERIOD_MS );
-    for (int i = 0; i < NUM_LEDS; i++)
-    {
-      if (buildings[i].GetPattern() == 1)
-      {
-        leds[i] = CRGB::Black;
-        FastLED.show();
-      }
-    }
-    vTaskDelay( 250 / portTICK_PERIOD_MS );
-  }
-}
-
-void TaskNewBlink(void *pvParameters)
-{
-  (void) pvParameters;
-
-  for (;;)
-  {
-    for(int i = 0; i < newBlinkBuildings.getSize(); i++)
+    for(int i = 0; i < blinkBuildings.getSize(); i++)
     {
       leds[i] = CRGB::Red;
       FastLED.show();
     }
     vTaskDelay( 500 / portTICK_PERIOD_MS );
-    for(int i = 0; i < newBlinkBuildings.getSize(); i++)
+    for(int i = 0; i < blinkBuildings.getSize(); i++)
     {
       leds[i] = CRGB::Black;
       FastLED.show();
@@ -183,7 +128,24 @@ void Fireplace(void *pvParameters)
   {
     for(int i = 0; i < fireplaceBuildings.getSize(); i++)
     {
-      leds[i] = CHSV(30, 255, random(50, 256));
+      if (fireValues[i] <= fireTargets[i])
+      {
+        fireValues[i] = fireValues[i] += fireSpeed;
+        if (fireValues[i] >= fireTargets[i])
+        {
+          fireTargets[i] = fireValues[i]);
+        }
+
+      }
+      if (fireValues[i] <= fireTargets[i])
+      {
+        fireValues[i] = fireValues[i] -= fireSpeed;
+        if (fireValues[i] <= fireTargets[i])
+        {
+          fireTargets[i] = random(50, 256);
+        }
+      }
+      leds[i] = CHSV(30, 255, fireValues[i]);
     }
     FastLED.show();
     vTaskDelay( 500 / portTICK_PERIOD_MS );
