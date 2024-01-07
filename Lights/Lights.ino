@@ -71,6 +71,11 @@ void setup()
   xTaskCreate(TaskBlink, "BlinkPattern", 128, NULL, 2, NULL);
   xTaskCreate(Fireplace, "FireplacePattern", 128, NULL, 2, NULL);
   //xTaskCreate(TaskTest, "TestPattern", 128, NULL, 2, NULL);
+
+  for(int i = 0; i < fireplaceBuildings.getSize(); i++)
+  {
+    Serial.println(fireplaceBuildings[i].GetName());s
+  }
 }
 
 void loop()
@@ -136,6 +141,5 @@ void Fireplace(void *pvParameters)
       }
     }
     FastLED.show();
-    vTaskDelay( 500 / portTICK_PERIOD_MS );
   }
 }
