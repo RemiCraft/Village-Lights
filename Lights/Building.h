@@ -57,7 +57,6 @@ class Building {
 
     void SetRandomTarget()
     {
-      Serial.println("Set Random Target");
       targetValue = random(50, 256);
     }
 
@@ -73,7 +72,6 @@ class Building {
 
     void SetFireValue(int value)
     {
-      Serial.println("Set Fire Value To" + value);
       fireValue = value;
     }
     

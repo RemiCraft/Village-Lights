@@ -68,6 +68,8 @@ void setup()
 
   for(int i = 0; i < fireplaceBuildings.getSize(); i++)
   {
+    fireplaceBuildings[i].SetFireValue(50);
+    fireplaceBuildings[i].SetTarget(256);
     Serial.println(fireplaceBuildings[i].GetFireValue());
     Serial.println(fireplaceBuildings[i].GetTargetValue());
     Serial.println("---");
