@@ -7,8 +7,6 @@ void TestPattern( void *pvParameters );
 void BlinkPattern( void *pvParameters );
 void FireplacePattern( void *pvParameters );
 List<Building> fireplaceBuildings;
-List<int> fireTargets;
-List<int> fireValues;
 List<Building> blinkBuildings;
 
 #define NUM_LEDS 20
@@ -18,7 +16,6 @@ List<Building> blinkBuildings;
 #define COLOR_ORDER RGB
 
 int fireSpeed = 10;
-
 
 CRGB leds[NUM_LEDS];
 // Building("name", position, patternID)
@@ -69,11 +66,6 @@ void setup()
       {
         fireplaceBuildings.add(buildings[i]);
       }
-    }
-
-    for(int i = 0; i < fireplaceBuildings.getSize(); i++)
-    {
-      fireValues[i] = random(50, 256);
     }
 
   xTaskCreate(TaskBlink, "BlinkPattern", 128, NULL, 2, NULL);
@@ -128,24 +120,20 @@ void Fireplace(void *pvParameters)
   {
     for(int i = 0; i < fireplaceBuildings.getSize(); i++)
     {
-      if (fireValues[i] <= fireTargets[i])
+      if (abs(fireplaceBuildings[i].GetFireValue() - fireplaceBuildings[i].GetTarget()) < fireSpeed)
       {
-        fireValues[i] = fireValues[i] += fireSpeed;
-        if (fireValues[i] >= fireTargets[i])
-        {
-          fireTargets[i] = fireValues[i]);
-        }
+        fireplaceBuildings[i].SetRandomTarget();
+      }
 
-      }
-      if (fireValues[i] <= fireTargets[i])
+      if (fireplaceBuildings[i].GetFireValue() < fireplaceBuildings[i].GetTarget())
       {
-        fireValues[i] = fireValues[i] -= fireSpeed;
-        if (fireValues[i] <= fireTargets[i])
-        {
-          fireTargets[i] = random(50, 256);
-        }
+        fireplaceBuildings[i].SetFireValue(fireplaceBuildings[i].GetFireValue() + fireSpeed);
       }
-      leds[i] = CHSV(30, 255, fireValues[i]);
+
+      if (fireplaceBuildings[i].GetFireValue() > fireplaceBuildings[i].GetTarget())
+      {
+        fireplaceBuildings[i].SetFireValue(fireplaceBuildings[i].GetFireValue() - fireSpeed);
+      }
     }
     FastLED.show();
     vTaskDelay( 500 / portTICK_PERIOD_MS );
