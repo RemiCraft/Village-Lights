@@ -16,7 +16,7 @@ class Building {
       pattern = 0;
       int fireValue = 50;
       int targetValue = 256;
-    
+    }
 
     Building(String newName, int newPosition, int newPattern)
     {
