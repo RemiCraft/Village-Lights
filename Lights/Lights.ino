@@ -126,7 +126,7 @@ void Fireplace(void *pvParameters)
     {
       if (abs(fireplaceBuildings[i].GetFireValue() - fireplaceBuildings[i].GetTargetValue()) < fireSpeed)
       {
-        fireplaceBuildings[i].SetRandomTarget();
+        //fireplaceBuildings[i].SetRandomTarget();
       }
 
       if (fireplaceBuildings[i].GetFireValue() < fireplaceBuildings[i].GetTargetValue())
