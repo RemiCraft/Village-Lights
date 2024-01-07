@@ -66,12 +66,6 @@ void setup()
   xTaskCreate(Fireplace, "FireplacePattern", 128, NULL, 2, NULL);
   //xTaskCreate(TaskTest, "TestPattern", 128, NULL, 2, NULL);
 
-  for(int i = 0; i < fireplaceBuildings.getSize(); i++)
-  {
-    Serial.println(fireplaceBuildings[i].GetFireValue());
-    Serial.println(fireplaceBuildings[i].GetTargetValue());
-    Serial.println("---");
-  }
   Serial.println("----------------------------------------------------------------------------------");
   for(int i = 0; i < fireplaceBuildings.getSize(); i++)
   {
