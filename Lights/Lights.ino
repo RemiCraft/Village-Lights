@@ -15,7 +15,7 @@ List<Building> blinkBuildings;
 #define LED_TYPE WS2812B
 #define COLOR_ORDER RGB
 
-int fireSpeed = 10;
+int fireSpeed = 1;
 
 CRGB leds[NUM_LEDS];
 // Building("name", position, patternID)
@@ -34,12 +34,6 @@ Building buildings[] = {
   Building("house12", 11, 2),
   Building("house13", 12, 2),
   Building("house14", 13, 2),
-  Building("house15", 14, 2),
-  Building("house16", 15, 2),
-  Building("house17", 16, 2),
-  Building("house18", 17, 2),
-  Building("house19", 18, 2),
-  Building("house20", 19, 2),
 };
 
 void setup()
@@ -75,6 +69,17 @@ void setup()
   for(int i = 0; i < fireplaceBuildings.getSize(); i++)
   {
     Serial.println(fireplaceBuildings[i].GetFireValue());
+    Serial.println(fireplaceBuildings[i].GetTargetValue());
+    Serial.println("---");
+  }
+  Serial.println("----------------------------------------------------------------------------------");
+  for(int i = 0; i < fireplaceBuildings.getSize(); i++)
+  {
+    fireplaceBuildings[i].SetFireValue(random(50, 256));
+    fireplaceBuildings[i].SetRandomTarget();
+    Serial.println(fireplaceBuildings[i].GetFireValue());
+    Serial.println(fireplaceBuildings[i].GetTargetValue());
+    Serial.println("---");
   }
 }
 
@@ -125,17 +130,17 @@ void Fireplace(void *pvParameters)
   {
     for(int i = 0; i < fireplaceBuildings.getSize(); i++)
     {
-      if (abs(fireplaceBuildings[i].GetFireValue() - fireplaceBuildings[i].GetTarget()) < fireSpeed)
+      if (abs(fireplaceBuildings[i].GetFireValue() - fireplaceBuildings[i].GetTargetValue()) < fireSpeed)
       {
         fireplaceBuildings[i].SetRandomTarget();
       }
 
-      if (fireplaceBuildings[i].GetFireValue() < fireplaceBuildings[i].GetTarget())
+      if (fireplaceBuildings[i].GetFireValue() < fireplaceBuildings[i].GetTargetValue())
       {
         fireplaceBuildings[i].SetFireValue(fireplaceBuildings[i].GetFireValue() + fireSpeed);
       }
 
-      if (fireplaceBuildings[i].GetFireValue() > fireplaceBuildings[i].GetTarget())
+      if (fireplaceBuildings[i].GetFireValue() > fireplaceBuildings[i].GetTargetValue())
       {
         fireplaceBuildings[i].SetFireValue(fireplaceBuildings[i].GetFireValue() - fireSpeed);
       }

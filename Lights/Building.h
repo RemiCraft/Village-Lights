@@ -65,7 +65,7 @@ class Building {
       targetValue = target;
     }
 
-    int GetTarget()
+    int GetTargetValue()
     {
       return targetValue;
     }
