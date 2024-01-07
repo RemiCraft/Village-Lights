@@ -74,7 +74,7 @@ void setup()
 
   for(int i = 0; i < fireplaceBuildings.getSize(); i++)
   {
-    Serial.println(fireplaceBuildings[i].GetName());s
+    Serial.println(fireplaceBuildings[i].GetFireValue());
   }
 }
 
@@ -139,6 +139,7 @@ void Fireplace(void *pvParameters)
       {
         fireplaceBuildings[i].SetFireValue(fireplaceBuildings[i].GetFireValue() - fireSpeed);
       }
+      leds[fireplaceBuildings[i].GetPosition()] = CHSV(30, 255, fireplaceBuildings[i].GetFireValue());
     }
     FastLED.show();
   }
